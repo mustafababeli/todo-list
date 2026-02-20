@@ -3,13 +3,12 @@ export default class Todo {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
+    this.status = false;
 
     if (priority !== "low" && priority !== "medium" && priority !== "high") {
       priority = "low";
     }
-
     this.priority = priority;
-    this.status = false;
   }
 
   toggleStatus() {

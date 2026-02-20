@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #cfcfcf;
+}
+
+.main-window {
+  width: 300px;
+  height: 550px;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #f5f5f5, #dcdcdc);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-shadow:
+    20px 20px 40px rgba(0, 0, 0, 0.25),
+    -10px -10px 25px rgba(255, 255, 255, 0.6);
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  width: 100%;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 14px 10px;
+  box-sizing: border-box;
+}
+.title {
+  margin: 0;
+  font-size: 25px;
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.header-content {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.my-projects,
+.my-todos {
+  flex: 1;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+
+  background: linear-gradient(145deg, #f3f3f3, #e4e4e4);
+
+  box-shadow:
+    3px 3px 6px rgba(0, 0, 0, 0.12),
+    -3px -3px 6px rgba(255, 255, 255, 0.6);
+
+  transition: all 0.15s ease;
+}
+
+.my-projects:active,
+.my-todos:active {
+  box-shadow:
+    inset 2px 2px 4px rgba(0, 0, 0, 0.12),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.content {
+  width: 280px;
+  height: 400px;
+  margin-top: auto;
+  margin-bottom: 10px;
+  border-radius: 30px;
+
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+
+  box-shadow:
+    inset 8px 8px 15px rgba(0, 0, 0, 0.15),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
