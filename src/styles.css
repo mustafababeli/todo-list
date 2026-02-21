@@ -10,7 +10,7 @@ body {
   background: #cfcfcf;
 }
 
-.main-window {
+.todo-window {
   width: 300px;
   height: 550px;
   border-radius: 30px;
@@ -27,7 +27,7 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.header {
+.todo-header {
   width: 100%;
   height: 130px;
   display: flex;
@@ -36,14 +36,15 @@ body {
   padding: 12px 14px 10px;
   box-sizing: border-box;
 }
-.title {
+
+.todo-title {
   margin: 0;
   font-size: 25px;
   flex: 0 0 auto;
   text-align: center;
 }
 
-.header-content {
+.todo-actions {
   width: 100%;
   flex: 1 1 auto;
   display: flex;
@@ -51,8 +52,8 @@ body {
   gap: 10px;
 }
 
-.my-projects,
-.my-todos {
+/* Shared button base */
+.btn {
   flex: 1;
   border-radius: 18px;
   border: none;
@@ -69,14 +70,13 @@ body {
   transition: all 0.15s ease;
 }
 
-.my-projects:active,
-.my-todos:active {
+.btn:active {
   box-shadow:
     inset 2px 2px 4px rgba(0, 0, 0, 0.12),
     inset -2px -2px 4px rgba(255, 255, 255, 0.6);
 }
 
-.content {
+.todo-content {
   width: 280px;
   height: 400px;
   margin-top: auto;
@@ -92,52 +92,113 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.add-project-inner {
+.project-dialog__inner,
+.todo-dialog__inner {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
 }
-.add-project::backdrop {
+
+.project-dialog::backdrop,
+.todo-dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
 }
-.add-project {
+
+.project-dialog,
+.todo-dialog {
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 30px;
   padding: 20px;
 }
 
-.add-project h3 {
+.project-dialog__title,
+.todo-dialog__title {
   padding: 0px;
   margin: 0px;
 }
 
-.project-form {
+.project-form,
+.todo-form {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-.project-input {
+
+.project-name-input,
+.todo-name-input,
+.todo-description-input,
+.todo-dueDate-input {
   width: 220px;
   padding: 5px 3px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   outline: none;
 }
-.create-button {
-  flex: 1;
-  border-radius: 18px;
-  border: none;
+
+.set-priority {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+.radio-div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.radio-btns {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.todo-priority-input {
+  display: none; /* hide default radio */
+}
+
+/* Base label style */
+.radio-div label {
+  padding: 6px 16px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 14px;
   font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
 
-  background: linear-gradient(145deg, #f3f3f3, #e4e4e4);
+/* HIGH */
+.radio-high label {
+  background-color: #ffe5e5;
+  color: #c20000;
+}
 
-  box-shadow:
-    3px 3px 6px rgba(0, 0, 0, 0.12),
-    -3px -3px 6px rgba(255, 255, 255, 0.6);
+/* MEDIUM */
+#todo-priority-medium + label {
+  background-color: #fff4cc;
+  color: #b88900;
+}
 
-  transition: all 0.15s ease;
+/* LOW */
+#todo-priority-low + label {
+  background-color: #e6f7e6;
+  color: #1f8a1f;
+}
+
+/* Selected effect */
+.todo-priority-input:checked + label {
+  transform: scale(1.05);
+  border: 2px solid currentColor;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.add-todo-to-project {
+  display: flex;
+  flex-direction: column;
+}
+select {
+  padding: 6px;
+  border-radius: 6px;
 }

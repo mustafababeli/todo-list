@@ -7,29 +7,128 @@
   </head>
   <body>
     <div class="app">
-      <div class="main-window">
-        <div class="header">
-          <p class="title">ToDo App</p>
-          <div class="header-content">
-            <button id="my-projects" class="my-projects">+ Add Project</button>
-            <button class="my-todos">+ Add Todo</button>
+      <div class="todo-window">
+        <header class="todo-header">
+          <p class="todo-title">ToDo App</p>
+
+          <div class="todo-actions">
+            <button id="btn-add-project" class="btn btn-add-project">
+              + Add Project
+            </button>
+            <button id="btn-add-todo" class="btn btn-add-todo">
+              + Add Todo
+            </button>
           </div>
-        </div>
-        <div class="content"></div>
+        </header>
+
+        <div class="todo-content"></div>
       </div>
     </div>
 
-    <dialog id="add-project" class="add-project">
-      <div class="add-project-inner">
-        <h3>Create new project</h3>
+    <!-- Project dialog -->
+
+    <dialog id="project-dialog" class="project-dialog">
+      <div class="project-dialog__inner">
+        <h3 class="project-dialog__title">Create new project</h3>
+
         <form id="project-form" class="project-form">
           <input
             type="text"
-            id="project-input"
-            class="project-input"
+            id="project-name-input"
+            class="project-name-input"
+            required
+            placeholder="Project name"
+          />
+
+          <button type="submit" class="btn btn-create-project">Create</button>
+          <button type="button" class="btn btn-cancel-project">Cancel</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- Todo dialog -->
+
+    <dialog id="todo-dialog" class="todo-dialog">
+      <div class="todo-dialog__inner">
+        <h3 class="todo-dialog__title">Create new Todo</h3>
+
+        <form id="todo-form" class="todo-form">
+          <input
+            type="text"
+            id="todo-name-input"
+            class="todo-name-input"
+            required
+            placeholder="Todo name"
+          />
+
+          <input
+            type="text"
+            id="todo-description-input"
+            class="todo-description-input"
+            required
+            placeholder="Description"
+          />
+
+          <input
+            type="date"
+            id="todo-dueDate-input"
+            class="todo-dueDate-input"
             required
           />
-          <button type="submit" class="create-button">Create</button>
+
+          <div class="radio-div">
+            <h3 class="set-priority">Set Priority</h3>
+            <div class="radio-btns">
+              <div class="radio-high">
+                <input
+                  type="radio"
+                  name="todo-priority"
+                  id="todo-priority-high"
+                  class="todo-priority-input"
+                  value="high"
+                />
+
+                <label for="todo-priority-high">High</label>
+              </div>
+
+              <div class="radio-low">
+                <input
+                  type="radio"
+                  name="todo-priority"
+                  id="todo-priority-medium"
+                  class="todo-priority-input"
+                  value="medium"
+                />
+
+                <label for="todo-priority-medium">Medium</label>
+              </div>
+              <div class="radio-low">
+                <input
+                  type="radio"
+                  name="todo-priority"
+                  id="todo-priority-low"
+                  class="todo-priority-input"
+                  value="low"
+                />
+                <label for="todo-priority-low">Low</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="add-todo-to-project">
+            <select name="projects-dropdown" id="projects-dropdown">
+              <option value="" disabled selected>Choose project</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-create-todo">Create</button>
+          <button
+            type="button"
+            id="btn-cancel-todo"
+            class="btn btn-cancel-todo"
+          >
+            Cancel
+          </button>
         </form>
       </div>
     </dialog>
