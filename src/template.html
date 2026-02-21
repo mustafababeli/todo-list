@@ -11,12 +11,27 @@
         <div class="header">
           <p class="title">ToDo App</p>
           <div class="header-content">
-            <button class="my-projects">+ Add Project</button>
+            <button id="my-projects" class="my-projects">+ Add Project</button>
             <button class="my-todos">+ Add Todo</button>
           </div>
         </div>
         <div class="content"></div>
       </div>
     </div>
+
+    <dialog id="add-project" class="add-project">
+      <div class="add-project-inner">
+        <h3>Create new project</h3>
+        <form id="project-form" class="project-form">
+          <input
+            type="text"
+            id="project-input"
+            class="project-input"
+            required
+          />
+          <button type="submit" class="create-button">Create</button>
+        </form>
+      </div>
+    </dialog>
   </body>
 </html>
