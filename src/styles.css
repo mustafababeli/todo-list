@@ -1,204 +1,362 @@
+:root {
+  --bg: #f7f7f7;
+  --surface: #ffffff;
+  --soft-yellow: #fff4c9;
+  --yellow-accent: #f2c94c;
+  --text: #2d2d2d;
+  --muted: #888888;
+}
+
+* {
+  box-sizing: border-box;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto;
+}
+
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #cfcfcf;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px;
 }
 
+/* ===== Main Window ===== */
 .todo-window {
-  width: 300px;
-  height: 550px;
-  border-radius: 30px;
-  background: linear-gradient(145deg, #f5f5f5, #dcdcdc);
-
+  width: 340px;
+  height: 580px;
+  background: var(--surface);
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  overflow: hidden;
 
-  box-shadow:
-    20px 20px 40px rgba(0, 0, 0, 0.25),
-    -10px -10px 25px rgba(255, 255, 255, 0.6);
-
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
 }
 
+/* Header */
 .todo-header {
-  width: 100%;
-  height: 130px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 14px 10px;
-  box-sizing: border-box;
+  padding: 24px 20px 18px;
+  background: var(--soft-yellow);
 }
 
 .todo-title {
   margin: 0;
-  font-size: 25px;
-  flex: 0 0 auto;
-  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .todo-actions {
-  width: 100%;
-  flex: 1 1 auto;
   display: flex;
-  margin-top: 10px;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
-/* Shared button base */
+/* Buttons */
 .btn {
   flex: 1;
-  border-radius: 18px;
+  padding: 10px 12px;
+  border-radius: 16px;
   border: none;
-  cursor: pointer;
-  font-size: 14px;
+  background: var(--surface);
+  font-size: 13px;
   font-weight: 500;
+  cursor: pointer;
 
-  background: linear-gradient(145deg, #f3f3f3, #e4e4e4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
 
-  box-shadow:
-    3px 3px 6px rgba(0, 0, 0, 0.12),
-    -3px -3px 6px rgba(255, 255, 255, 0.6);
-
-  transition: all 0.15s ease;
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .btn:active {
-  box-shadow:
-    inset 2px 2px 4px rgba(0, 0, 0, 0.12),
-    inset -2px -2px 4px rgba(255, 255, 255, 0.6);
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Content */
 .todo-content {
-  width: 280px;
-  height: 400px;
-  margin-top: auto;
-  margin-bottom: 10px;
-  border-radius: 30px;
+  flex: 1;
+  padding: 20px;
+  background: var(--surface);
+  overflow-y: auto;
+}
 
-  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+/* ===== Dialogs ===== */
+.project-dialog::backdrop,
+.todo-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.15);
+}
 
-  box-shadow:
-    inset 8px 8px 15px rgba(0, 0, 0, 0.15),
-    inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+.project-dialog,
+.todo-dialog {
+  border: none;
+  border-radius: 24px;
+  padding: 24px;
+  background: var(--surface);
 
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
 .project-dialog__inner,
 .todo-dialog__inner {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.project-dialog::backdrop,
-.todo-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.project-dialog,
-.todo-dialog {
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 30px;
-  padding: 20px;
+  gap: 16px;
+  min-width: 280px;
 }
 
 .project-dialog__title,
 .todo-dialog__title {
-  padding: 0px;
-  margin: 0px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 }
 
+/* Forms */
 .project-form,
 .todo-form {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 12px;
 }
 
+/* Inputs */
 .project-name-input,
 .todo-name-input,
 .todo-description-input,
-.todo-dueDate-input {
-  width: 220px;
-  padding: 5px 3px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+.todo-dueDate-input,
+#projects-dropdown {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid #e6e6e6;
+  background: #fafafa;
+  font-size: 14px;
   outline: none;
+  transition: border 0.2s ease;
 }
 
-.set-priority {
-  margin-top: 10px;
-  margin-bottom: 0px;
+.project-name-input:focus,
+.todo-name-input:focus,
+.todo-description-input:focus,
+.todo-dueDate-input:focus,
+#projects-dropdown:focus {
+  border-color: var(--yellow-accent);
+  background: #ffffff;
 }
+
+/* Priority section */
+.set-priority {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .radio-div {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  align-items: center;
+  gap: 10px;
 }
 
 .radio-btns {
   display: flex;
-  gap: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  gap: 10px;
 }
 
 .todo-priority-input {
-  display: none; /* hide default radio */
+  display: none;
 }
 
-/* Base label style */
 .radio-div label {
-  padding: 6px 16px;
+  padding: 8px 14px;
   border-radius: 20px;
   cursor: pointer;
+  font-size: 13px;
   font-weight: 500;
+  background: #f2f2f2;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
 }
 
-/* HIGH */
-.radio-high label {
-  background-color: #ffe5e5;
-  color: #c20000;
-}
-
-/* MEDIUM */
-#todo-priority-medium + label {
-  background-color: #fff4cc;
-  color: #b88900;
-}
-
-/* LOW */
-#todo-priority-low + label {
-  background-color: #e6f7e6;
-  color: #1f8a1f;
-}
-
-/* Selected effect */
 .todo-priority-input:checked + label {
-  transform: scale(1.05);
-  border: 2px solid currentColor;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  background: var(--soft-yellow);
+  color: #333;
 }
 
+/* Add todo to project section */
 .add-todo-to-project {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
-select {
-  padding: 6px;
-  border-radius: 6px;
+
+.add-todo-to-project-text {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.project-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-div {
+  background-color: #fff4c9;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.project-title {
+  margin: 3px;
+}
+
+.todo-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 4px 10px;
+
+  padding: 10px 12px;
+  margin: 8px 0;
+
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+
+  box-shadow:
+    6px 6px 14px rgba(0, 0, 0, 0.12),
+    -6px -6px 14px rgba(255, 255, 255, 0.75);
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.todo-name {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: inherit;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.todo-description {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+
+  font-size: 0.85rem;
+  opacity: 0.7;
+  text-decoration: none;
+  color: inherit;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.todo-date {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+
+  font-size: 0.8rem;
+  opacity: 0.75;
+  text-decoration: none;
+  color: inherit;
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.todo-priority {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+
+  justify-self: end;
+  align-self: center;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* base pill */
+.todo-priority {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* HIGH */
+.priority-high {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* MEDIUM */
+.priority-medium {
+  background: #ffc107;
+  color: rgb(255, 255, 255);
+}
+
+/* LOW */
+.priority-low {
+  background: #28c76f;
+  color: white;
+}
+
+/* Mobile: full screen */
+@media (max-width: 600px) {
+  .app {
+    padding: 0;
+    place-items: stretch;
+  }
+
+  .todo-window {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .todo-content {
+    padding: 16px;
+  }
+}
+
+/* Tablet: same as now (keep desktop sizing) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .todo-window {
+    width: 340px;
+    height: 580px;
+    border-radius: 28px;
+  }
+
+  .app {
+    padding: 40px;
+    place-items: center;
+  }
 }
