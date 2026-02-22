@@ -2,6 +2,8 @@ import "./styles.css";
 import Todo from "./todo.js";
 import Project from "./project.js";
 
+/* =================UTILS=================== */
+
 function getDaysLeft(dueDateString) {
   if (!dueDateString) return null;
 
@@ -24,8 +26,133 @@ const input = document.getElementById("project-name-input");
 const projectCancelBtn = document.querySelector(".btn-cancel-project");
 const projectDropdown = document.getElementById("projects-dropdown");
 
+const projectEditDialog = document.getElementById("project-edit");
+const projectEditCancelBtn = document.querySelector(".btn-edit-cancel-project");
+const projectEditDeleteBtn = document.querySelector(".btn-edit-delete-project");
+const projectEditForm = document.getElementById("project-edit-form");
+const projectEditInput = document.getElementById("project-edit-input");
+
+const projectPopupDialog = document.getElementById("popup-add-project");
+const projectPopupCloseBtn = document.querySelector(
+  ".btn-close-popup-add-project",
+);
+
+/* =================DELETE TODO DIALOG DOM REFERENCES=================== */
+
+const deleteTodoDialog = document.getElementById("delete-todo-dialog");
+const confirmDeleteTodoBtn = document.getElementById("confirm-delete-todo");
+const cancelDeleteTodoBtn = document.getElementById("cancel-delete-todo");
+
+let todoToDelete = null;
+
+/* Cancel delete */
+cancelDeleteTodoBtn.addEventListener("click", () => {
+  deleteTodoDialog.close();
+  todoToDelete = null;
+});
+
+/* Confirm delete (DOM only) */
+confirmDeleteTodoBtn.addEventListener("click", () => {
+  if (!todoToDelete) return;
+
+  todoToDelete.remove();
+  deleteTodoDialog.close();
+  todoToDelete = null;
+});
+
+/* =================PROJECT STATE=================== */
+
+let editingProjectObj = null;
+let editingProjectDiv = null;
+let editingOldName = null;
+
 /* project storage */
 const projects = [];
+
+/* =================PROJECT POPUP CONTROLS=================== */
+
+projectPopupCloseBtn.addEventListener("click", () => {
+  projectPopupDialog.close();
+});
+
+/* =================PROJECT EDIT MODAL CONTROLS=================== */
+
+projectEditCancelBtn.addEventListener("click", () => {
+  projectEditDialog.close();
+});
+
+/* =================PROJECT EDIT SAVE LOGIC=================== */
+
+// ---- EDIT: SAVE (rename project) ----
+projectEditForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  // safety: must have a selected project from the title click
+  if (!editingProjectObj || !editingProjectDiv || !editingOldName) return;
+
+  const newName = projectEditInput.value.trim().toLowerCase();
+  if (!newName) return;
+
+  // prevent duplicates (but allow saving the same name)
+  const duplicate = projects.some(
+    (p) => p.name.toLowerCase() === newName && p.name !== editingOldName,
+  );
+  if (duplicate) return;
+
+  // 1) update the Project object
+  editingProjectObj.name = newName;
+
+  // 2) update DOM dataset + title text
+  editingProjectDiv.dataset.projectName = newName;
+  const titleEl = editingProjectDiv.querySelector(".project-title");
+  if (titleEl) titleEl.textContent = newName.toUpperCase();
+
+  // 3) update dropdown option (value + label)
+  const opt = projectDropdown.querySelector(
+    `option[value="${editingOldName}"]`,
+  );
+  if (opt) {
+    opt.value = newName;
+    opt.textContent = newName.toUpperCase();
+  }
+
+  // keep selection on the renamed project
+  projectDropdown.value = newName;
+
+  // cleanup
+  editingProjectObj = null;
+  editingProjectDiv = null;
+  editingOldName = null;
+  projectEditInput.value = "";
+  projectEditDialog.close();
+});
+
+/* =================PROJECT DELETE LOGIC=================== */
+
+projectEditDeleteBtn.addEventListener("click", () => {
+  // must be editing something
+  if (!editingProjectObj || !editingProjectDiv || !editingOldName) return;
+
+  // 1) remove from projects array
+  const index = projects.findIndex((p) => p === editingProjectObj);
+  if (index !== -1) projects.splice(index, 1);
+
+  // 2) remove from dropdown
+  const opt = projectDropdown.querySelector(
+    `option[value="${editingOldName}"]`,
+  );
+  if (opt) opt.remove();
+
+  // 3) remove from DOM
+  editingProjectDiv.remove();
+
+  // 4) cleanup + close
+  editingProjectObj = null;
+  editingProjectDiv = null;
+  editingOldName = null;
+  projectEditInput.value = "";
+  projectEditDialog.close();
+});
 
 /* =================PROJECT MODAL CONTROLS=================== */
 
@@ -34,8 +161,11 @@ addProjectBtn.addEventListener("click", () => {
   projectDialog.showModal();
 });
 
-/* Close project creation moda */
+/* Close project creation modal */
 projectCancelBtn.addEventListener("click", () => {
+  const existingError = projectForm.querySelector(".error-msg");
+  if (existingError) existingError.remove();
+
   projectDialog.close();
 });
 
@@ -44,8 +174,21 @@ projectCancelBtn.addEventListener("click", () => {
 projectForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const projectName = input.value.trim();
+  const existingError = projectForm.querySelector(".error-msg");
+  if (existingError) existingError.remove();
+
+  const projectName = input.value.trim().toLowerCase();
   if (!projectName) return;
+
+  for (let i = 0; i < projects.length; i++) {
+    if (projects[i].name.toLowerCase() === projectName) {
+      const errorMsg = document.createElement("div");
+      errorMsg.classList.add("error-msg");
+      errorMsg.textContent = "Project already exists!";
+      projectForm.appendChild(errorMsg);
+      return;
+    }
+  }
 
   // Create project model
   const newProject = new Project(projectName);
@@ -54,7 +197,7 @@ projectForm.addEventListener("submit", (e) => {
   // Add project to dropdown selector
   const option = document.createElement("option");
   option.value = projectName;
-  option.textContent = projectName;
+  option.textContent = projectName.toUpperCase();
   projectDropdown.appendChild(option);
 
   // Create project container
@@ -66,10 +209,19 @@ projectForm.addEventListener("submit", (e) => {
   const titleDiv = document.createElement("div");
   titleDiv.classList.add("title-div");
 
+  titleDiv.addEventListener("click", () => {
+    editingProjectObj = newProject; // the Project instance for this project
+    editingProjectDiv = projectDiv; // the DOM container for this project
+    editingOldName = newProject.name; // current name (lowercase)
+
+    projectEditInput.value = editingOldName;
+    projectEditDialog.showModal();
+  });
+
   // Create project title
   const projectTitle = document.createElement("h4");
   projectTitle.classList.add("project-title");
-  projectTitle.textContent = projectName;
+  projectTitle.textContent = projectName.toUpperCase();
 
   // Container where todos will be inserted
   const projectTodos = document.createElement("div");
@@ -98,14 +250,14 @@ const todoName = document.getElementById("todo-name-input");
 const todoDescriptoin = document.getElementById("todo-description-input");
 const dueDate = document.getElementById("todo-dueDate-input");
 
-/* =====================TODO MODAL CONTROLs====================== */
+/* =====================TODO MODAL CONTROLS====================== */
 
-/*Open todo creation modal*/
+/* Open todo creation modal */
 addTodoBtn.addEventListener("click", () => {
   todoDialog.showModal();
 });
 
-/*Close todo creation modal*/
+/* Close todo creation modal */
 todoCancelBtn.addEventListener("click", () => {
   todoDialog.close();
 });
@@ -129,6 +281,12 @@ todoForm.addEventListener("submit", (e) => {
     priority,
   );
 
+  if (projects.length === 0) {
+    todoDialog.close();
+    projectPopupDialog.showModal();
+    return;
+  }
+
   if (!project) return;
 
   project.addTodo(newTodo);
@@ -137,7 +295,6 @@ todoForm.addEventListener("submit", (e) => {
   const daysLeft = getDaysLeft(newTodo.dueDate);
 
   let dueText;
-
   if (daysLeft === null) {
     dueText = "No due date";
   } else if (daysLeft < 0) {
@@ -151,6 +308,12 @@ todoForm.addEventListener("submit", (e) => {
   // Create todo container
   const todoItem = document.createElement("div");
   todoItem.classList.add("todo-item");
+
+  // ✅ click -> open delete dialog
+  todoItem.addEventListener("click", () => {
+    todoToDelete = todoItem;
+    deleteTodoDialog.showModal();
+  });
 
   const todoNameEL = document.createElement("a");
   todoNameEL.classList.add("todo-name");
@@ -167,8 +330,6 @@ todoForm.addEventListener("submit", (e) => {
   const todoPriorityEL = document.createElement("div");
   todoPriorityEL.classList.add("todo-priority");
   todoPriorityEL.textContent = newTodo.priority;
-
-  todoPriorityEL.textContent = newTodo.priority;
   todoPriorityEL.classList.add(`priority-${newTodo.priority}`);
 
   // Render todo display text
@@ -181,7 +342,6 @@ todoForm.addEventListener("submit", (e) => {
   const projectDiv = document.querySelector(
     `[data-project-name="${selectedProjectName}"]`,
   );
-
   const projectTodos = projectDiv.querySelector(".project-todos");
 
   // Attach todo to project

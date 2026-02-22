@@ -131,5 +131,54 @@
         </form>
       </div>
     </dialog>
+
+    <dialog id="project-edit" class="project-edit">
+      <div class="project-edit-dialog__inner">
+        <h3 class="project-edit-dialog__title">Edit project</h3>
+
+        <form id="project-edit-form" class="project-edit-form">
+          <input
+            type="text"
+            id="project-edit-input"
+            class="project-edit-input"
+            placeholder="New project name"
+          />
+
+          <button type="submit" class="btn btn-edit-save-project">Save</button>
+          <button type="button" class="btn btn-edit-cancel-project">
+            Cancel
+          </button>
+
+          <button type="button" class="btn btn-edit-delete-project">
+            Delete project
+          </button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="popup-add-project" class="popup-add-project">
+      <div class="popup-add-project-dialog__inner">
+        <h3 class="popup-add-project-dialog__title">
+          You must add a project first!
+        </h3>
+
+        <form id="popup-add-project-form" class="popup-add-project-form">
+          <button type="button" class="btn btn-close-popup-add-project">
+            Close
+          </button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="delete-todo-dialog" class="delete-todo-dialog">
+      <div class="delete-todo-dialog__inner">
+        <h3 class="delete-todo-title">Delete this todo?</h3>
+
+        <div class="delete-todo-actions">
+          <button id="confirm-delete-todo" class="btn">Delete</button>
+          <button id="cancel-delete-todo" class="btn">Cancel</button>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
