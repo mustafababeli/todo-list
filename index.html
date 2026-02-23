@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+  <script defer src="main.js"></script></head>
+  <body>
+    <div class="app">
+      <div class="todo-window">
+        <header class="todo-header">
+          <p class="todo-title">ToDo App</p>
+
+          <div class="todo-actions">
+            <button id="btn-add-project" class="btn btn-add-project">
+              + Add Project
+            </button>
+            <button id="btn-add-todo" class="btn btn-add-todo">
+              + Add Todo
+            </button>
+          </div>
+        </header>
+
+        <div id="todo-content" class="todo-content"></div>
+      </div>
+    </div>
+
+    <!-- Project dialog -->
+
+    <dialog id="project-dialog" class="project-dialog">
+      <div class="project-dialog__inner">
+        <h3 class="project-dialog__title">Create new project</h3>
+
+        <form id="project-form" class="project-form">
+          <input
+            type="text"
+            id="project-name-input"
+            class="project-name-input"
+            required
+            placeholder="Project name"
+          />
+
+          <button type="submit" class="btn btn-create-project">Create</button>
+          <button type="button" class="btn btn-cancel-project">Cancel</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- Todo dialog -->
+
+    <dialog id="todo-dialog" class="todo-dialog">
+      <div class="todo-dialog__inner">
+        <h3 class="todo-dialog__title">Create new Todo</h3>
+
+        <form id="todo-form" class="todo-form">
+          <input
+            type="text"
+            id="todo-name-input"
+            class="todo-name-input"
+            required
+            placeholder="Todo name"
+          />
+
+          <input
+            type="text"
+            id="todo-description-input"
+            class="todo-description-input"
+            required
+            placeholder="Description"
+          />
+
+          <input
+            type="date"
+            id="todo-dueDate-input"
+            class="todo-dueDate-input"
+            required
+          />
+
+          <div class="radio-div">
+            <h3 class="set-priority">Set Priority</h3>
+            <div class="radio-btns">
+              <div class="radio-high">
+                <input
+                  type="radio"
+                  name="todo-priority"
+                  id="todo-priority-high"
+                  class="todo-priority-input"
+                  value="high"
+                />
+
+                <label for="todo-priority-high">High</label>
+              </div>
+
+              <div class="radio-low">
+                <input
+                  type="radio"
+                  name="todo-priority"
+                  id="todo-priority-medium"
+                  class="todo-priority-input"
+                  value="medium"
+                />
+
+                <label for="todo-priority-medium">Medium</label>
+              </div>
+              <div class="radio-low">
+                <input
+                  type="radio"
+                  name="todo-priority"
+                  id="todo-priority-low"
+                  class="todo-priority-input"
+                  value="low"
+                />
+                <label for="todo-priority-low">Low</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="add-todo-to-project">
+            <h3 class="add-todo-to-project-text">Add todo to a project</h3>
+            <select name="projects-dropdown" id="projects-dropdown"></select>
+          </div>
+
+          <button type="submit" class="btn btn-create-todo">Create</button>
+          <button
+            type="button"
+            id="btn-cancel-todo"
+            class="btn btn-cancel-todo"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="project-edit" class="project-edit">
+      <div class="project-edit-dialog__inner">
+        <h3 class="project-edit-dialog__title">Edit project</h3>
+
+        <form id="project-edit-form" class="project-edit-form">
+          <input
+            type="text"
+            id="project-edit-input"
+            class="project-edit-input"
+            placeholder="New project name"
+          />
+
+          <button type="submit" class="btn btn-edit-save-project">Save</button>
+          <button type="button" class="btn btn-edit-cancel-project">
+            Cancel
+          </button>
+
+          <button type="button" class="btn btn-edit-delete-project">
+            Delete project
+          </button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="popup-add-project" class="popup-add-project">
+      <div class="popup-add-project-dialog__inner">
+        <h3 class="popup-add-project-dialog__title">
+          You must add a project first!
+        </h3>
+
+        <form id="popup-add-project-form" class="popup-add-project-form">
+          <button type="button" class="btn btn-close-popup-add-project">
+            Close
+          </button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="delete-todo-dialog" class="delete-todo-dialog">
+      <div class="delete-todo-dialog__inner">
+        <h3 class="delete-todo-title">Delete this todo?</h3>
+
+        <div class="delete-todo-actions">
+          <button id="confirm-delete-todo" class="btn">Delete</button>
+          <button id="cancel-delete-todo" class="btn">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>
